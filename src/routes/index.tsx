@@ -23,13 +23,19 @@ export const Route = createFileRoute("/")({
 
 function Landing() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header />
-      <Hero />
-      <Features />
-      <HowItWorks />
-      <CTA />
-      <Footer />
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-primary-soft/40 via-background to-background text-foreground">
+      {/* Decorative soft blobs */}
+      <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/20 blur-3xl" />
+      <div className="pointer-events-none absolute top-40 -right-32 h-96 w-96 rounded-full bg-accent/30 blur-3xl" />
+      <div className="pointer-events-none absolute top-[110vh] left-1/3 h-80 w-80 rounded-full bg-primary-soft/60 blur-3xl" />
+      <div className="relative">
+        <Header />
+        <Hero />
+        <Features />
+        <HowItWorks />
+        <CTA />
+        <Footer />
+      </div>
     </div>
   );
 }
