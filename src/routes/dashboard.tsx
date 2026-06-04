@@ -324,10 +324,12 @@ function Dashboard() {
 
           {data && view === "transactions" && (
             <>
-              <div className="mb-6 flex items-end justify-between">
+              <div className="mb-6 flex items-end justify-between flex-wrap gap-3">
                 <div>
                   <h1 className="text-2xl font-semibold tracking-tight">Transaksi</h1>
-                  <p className="mt-1 text-sm text-muted-foreground">{data.transactions.length} total transaksi</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Menampilkan {filteredTx.length} dari {data.transactions.length} transaksi
+                  </p>
                 </div>
                 <div className="flex gap-2">
                   <ExportButton />
@@ -339,18 +341,71 @@ function Dashboard() {
                   </button>
                 </div>
               </div>
+
+              <div className="mb-4 grid gap-2 md:grid-cols-[1fr_auto_auto_auto]">
+                <div className="relative">
+                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    value={txSearch}
+                    onChange={(e) => setTxSearch(e.target.value)}
+                    placeholder="Cari catatan atau kategori…"
+                    className={inputCls + " pl-9"}
+                  />
+                </div>
+                <select
+                  value={txType}
+                  onChange={(e) => setTxType(e.target.value as any)}
+                  className="rounded-xl border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="all">Semua tipe</option>
+                  <option value="income">Pemasukan</option>
+                  <option value="expense">Pengeluaran</option>
+                </select>
+                <select
+                  value={txCategory}
+                  onChange={(e) => setTxCategory(e.target.value)}
+                  className="rounded-xl border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="all">Semua kategori</option>
+                  {data.categories.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name}
+                    </option>
+                  ))}
+                  <option value="none">Tanpa kategori</option>
+                </select>
+                {(txSearch || txType !== "all" || txCategory !== "all") && (
+                  <button
+                    onClick={() => {
+                      setTxSearch("");
+                      setTxType("all");
+                      setTxCategory("all");
+                    }}
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 text-sm font-medium hover:bg-muted"
+                  >
+                    <X className="h-3.5 w-3.5" /> Reset
+                  </button>
+                )}
+              </div>
+
               <div className="rounded-3xl border border-border bg-card p-6">
                 <div className="divide-y divide-border">
-                  {data.transactions.map((t) => (
+                  {filteredTx.map((t) => (
                     <TxRow key={t.id} t={t} />
                   ))}
-                  {data.transactions.length === 0 && (
-                    <p className="py-8 text-center text-sm text-muted-foreground">Belum ada transaksi.</p>
+                  {filteredTx.length === 0 && (
+                    <p className="py-8 text-center text-sm text-muted-foreground">
+                      {data.transactions.length === 0
+                        ? "Belum ada transaksi."
+                        : "Tidak ada transaksi yang cocok dengan filter."}
+                    </p>
                   )}
                 </div>
               </div>
             </>
           )}
+
+          {view === "goals" && <GoalsView />}
 
           {data && view === "categories" && (
             <>
