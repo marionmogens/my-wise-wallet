@@ -236,7 +236,7 @@ const features = [
 function Features() {
   return (
     <section id="fitur" className="border-t border-border/60 bg-secondary/30">
-      <div className="mx-auto max-w-7xl px-6 py-20">
+      <div className="mx-auto max-w-7xl px-8 py-20 md:px-12 lg:px-20">
         <div className="max-w-2xl">
           <p className="text-sm font-medium text-primary">Fitur</p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
