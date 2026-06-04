@@ -144,8 +144,23 @@ function Dashboard() {
     { id: "overview", label: "Ringkasan", icon: LayoutDashboard },
     { id: "transactions", label: "Transaksi", icon: ListOrdered },
     { id: "categories", label: "Kategori", icon: Tags },
+    { id: "goals", label: "Target", icon: Target },
     { id: "ai", label: "Monetra AI", icon: Bot },
   ] as const;
+
+  const filteredTx = useMemo(() => {
+    if (!data) return [];
+    const q = txSearch.trim().toLowerCase();
+    return data.transactions.filter((t) => {
+      if (txType !== "all" && t.type !== txType) return false;
+      if (txCategory !== "all" && (t.categoryId || "none") !== txCategory) return false;
+      if (q) {
+        const hay = (t.note + " " + t.categoryName).toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [data, txSearch, txType, txCategory]);
 
   return (
     <div className="flex min-h-screen bg-secondary/30">
