@@ -28,6 +28,8 @@ import {
   LayoutDashboard,
   ListOrdered,
   Tags,
+  Search,
+  PiggyBank,
 } from "lucide-react";
 
 import { getCurrentUser, logoutUser } from "@/lib/auth.functions";
@@ -41,6 +43,8 @@ import {
   exportMonthlyCSV,
 } from "@/lib/finance.functions";
 import { chatFinance } from "@/lib/chat.functions";
+import { getGoals, addGoal, contributeGoal, deleteGoal } from "@/lib/goals.functions";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — Monetra" }] }),
