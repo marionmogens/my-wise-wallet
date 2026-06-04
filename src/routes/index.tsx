@@ -76,7 +76,7 @@ function Logo() {
 
 function Hero() {
   return (
-    <section className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:grid-cols-2 md:items-center md:py-24">
+    <section className="mx-auto grid max-w-7xl gap-12 px-8 py-16 md:grid-cols-2 md:items-center md:px-12 md:py-24 lg:px-20">
       <div className="space-y-7">
         <div className="inline-flex items-center gap-2 rounded-full border border-border bg-primary-soft/40 px-3 py-1 text-xs font-medium text-primary">
           <Sparkles className="h-3.5 w-3.5" />
