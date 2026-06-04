@@ -118,70 +118,111 @@ function Hero() {
 }
 
 function HeroMock() {
+  const bars = [38, 62, 45, 78, 55, 90, 68];
+  const days = ["S", "S", "R", "K", "J", "S", "M"];
   return (
     <div className="relative">
-      <div className="absolute -inset-8 -z-10 rounded-[3rem] bg-gradient-to-br from-primary/20 via-accent/30 to-transparent blur-2xl" />
-      <div className="rounded-3xl border border-border bg-card p-6 shadow-2xl shadow-primary/10">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-xs text-muted-foreground">Saldo bulan ini</p>
-            <p className="mt-1 text-3xl font-semibold tracking-tight">Rp 4.250.000</p>
-          </div>
-          <div className="rounded-full bg-success/15 px-3 py-1 text-xs font-medium text-success">
-            +12.4%
-          </div>
-        </div>
-        <div className="mt-6 grid grid-cols-2 gap-3">
-          <Stat label="Pemasukan" value="Rp 8.5jt" tone="success" />
-          <Stat label="Pengeluaran" value="Rp 4.25jt" tone="destructive" />
-        </div>
-        <div className="mt-6 space-y-3">
-          {[
-            { name: "Makanan", color: "#ef4444", pct: 70 },
-            { name: "Transportasi", color: "#f97316", pct: 45 },
-            { name: "Belanja", color: "#8b5cf6", pct: 30 },
-          ].map((c) => (
-            <div key={c.name}>
-              <div className="mb-1 flex justify-between text-xs text-muted-foreground">
-                <span>{c.name}</span>
-                <span>{c.pct}%</span>
-              </div>
-              <div className="h-2 overflow-hidden rounded-full bg-muted">
-                <div
-                  className="h-full rounded-full"
-                  style={{ width: `${c.pct}%`, backgroundColor: c.color }}
-                />
+      <div className="absolute -inset-10 -z-10 rounded-[3rem] bg-gradient-to-br from-primary/20 via-accent/30 to-transparent blur-3xl" />
+
+      {/* Laptop */}
+      <div className="relative mx-auto w-full max-w-xl">
+        {/* Screen bezel */}
+        <div className="rounded-t-2xl border border-border bg-neutral-900 p-3 shadow-2xl shadow-primary/20">
+          {/* Camera dot */}
+          <div className="mx-auto mb-2 h-1.5 w-1.5 rounded-full bg-neutral-700" />
+          {/* Screen content */}
+          <div className="overflow-hidden rounded-lg bg-card">
+            {/* Mini toolbar */}
+            <div className="flex items-center gap-1.5 border-b border-border bg-muted/50 px-3 py-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-destructive/70" />
+              <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/80" />
+              <span className="h-2.5 w-2.5 rounded-full bg-success/70" />
+              <div className="ml-3 flex-1 truncate rounded bg-background/70 px-2 py-0.5 text-[10px] text-muted-foreground">
+                monetra.app/dashboard
               </div>
             </div>
-          ))}
-        </div>
-        <div className="mt-6 rounded-2xl bg-primary-soft/50 p-4">
-          <div className="flex items-start gap-3">
-            <div className="grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground">
-              <Bot className="h-4 w-4" />
-            </div>
-            <div className="text-sm">
-              <p className="font-medium">Saran Monetra AI</p>
-              <p className="mt-1 text-muted-foreground">
-                Pengeluaran makanan kamu naik 18% minggu ini. Coba batasi Rp 75rb/hari ya!
-              </p>
+
+            {/* App body */}
+            <div className="grid grid-cols-5 gap-3 p-4">
+              {/* Chart card */}
+              <div className="col-span-3 rounded-xl border border-border bg-background p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-[10px] text-muted-foreground">Saldo</p>
+                    <p className="text-base font-semibold tracking-tight">Rp 4.250.000</p>
+                  </div>
+                  <span className="rounded-full bg-success/15 px-2 py-0.5 text-[10px] font-medium text-success">
+                    +12.4%
+                  </span>
+                </div>
+                {/* Bar chart */}
+                <div className="mt-3 flex h-20 items-end gap-1.5">
+                  {bars.map((h, i) => (
+                    <div key={i} className="flex flex-1 flex-col items-center gap-1">
+                      <div
+                        className="w-full rounded-t bg-gradient-to-t from-primary to-accent"
+                        style={{ height: `${h}%` }}
+                      />
+                      <span className="text-[8px] text-muted-foreground">{days[i]}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Chatbot card */}
+              <div className="col-span-2 flex flex-col rounded-xl border border-border bg-background p-3">
+                <div className="flex items-center gap-2">
+                  <div className="grid h-6 w-6 place-items-center rounded-full bg-primary text-primary-foreground">
+                    <Bot className="h-3 w-3" />
+                  </div>
+                  <p className="text-xs font-medium">Monetra AI</p>
+                </div>
+                <div className="mt-2 space-y-1.5">
+                  <div className="ml-auto max-w-[85%] rounded-lg rounded-tr-sm bg-primary px-2 py-1 text-[10px] text-primary-foreground">
+                    Berapa budget makanan?
+                  </div>
+                  <div className="max-w-[90%] rounded-lg rounded-tl-sm bg-muted px-2 py-1 text-[10px] text-foreground">
+                    Sisa Rp 320rb minggu ini. Coba batasi Rp 75rb/hari ya!
+                  </div>
+                </div>
+                <div className="mt-auto flex items-center gap-1 rounded-md border border-border bg-card px-2 py-1">
+                  <span className="flex-1 truncate text-[10px] text-muted-foreground">Tanya AI…</span>
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
+                </div>
+              </div>
+
+              {/* Category bars row */}
+              <div className="col-span-5 grid grid-cols-3 gap-2">
+                {[
+                  { name: "Makanan", color: "#ef4444", pct: 70 },
+                  { name: "Transport", color: "#f97316", pct: 45 },
+                  { name: "Belanja", color: "#8b5cf6", pct: 30 },
+                ].map((c) => (
+                  <div key={c.name} className="rounded-lg border border-border bg-background p-2">
+                    <div className="flex justify-between text-[9px] text-muted-foreground">
+                      <span>{c.name}</span>
+                      <span>{c.pct}%</span>
+                    </div>
+                    <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-muted">
+                      <div className="h-full rounded-full" style={{ width: `${c.pct}%`, backgroundColor: c.color }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Laptop base */}
+        <div className="relative mx-auto h-3 w-[108%] -translate-x-[3.7%] rounded-b-2xl bg-gradient-to-b from-neutral-800 to-neutral-700 shadow-xl">
+          <div className="absolute left-1/2 top-1 h-1 w-16 -translate-x-1/2 rounded-full bg-neutral-900/60" />
+        </div>
+        <div className="mx-auto h-1 w-[60%] rounded-b-xl bg-neutral-700/40" />
       </div>
     </div>
   );
 }
 
-function Stat({ label, value, tone }: { label: string; value: string; tone: "success" | "destructive" }) {
-  const cls = tone === "success" ? "text-success" : "text-destructive";
-  return (
-    <div className="rounded-2xl border border-border bg-background p-3">
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className={`mt-1 text-lg font-semibold ${cls}`}>{value}</p>
-    </div>
-  );
-}
 
 const features = [
   { icon: Wallet, title: "Dompet harian", desc: "Tetapkan batas pengeluaran per hari dan lihat sisa real-time." },
