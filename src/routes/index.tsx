@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { ArrowRight, Wallet, PieChart, Bot, Download, Target, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/")({
