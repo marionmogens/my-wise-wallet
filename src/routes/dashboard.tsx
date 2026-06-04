@@ -228,7 +228,8 @@ function Dashboard() {
               </button>
             );
           })}
-          <button onClick={handleLogout} className="ml-auto shrink-0 rounded-full p-1.5 text-muted-foreground hover:bg-muted">
+          <ThemeToggle className="ml-auto !h-8 !w-8" />
+          <button onClick={handleLogout} className="shrink-0 rounded-full p-1.5 text-muted-foreground hover:bg-muted">
             <LogOut className="h-4 w-4" />
           </button>
         </div>
