@@ -23,20 +23,26 @@ export const Route = createFileRoute("/")({
 
 function Landing() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header />
-      <Hero />
-      <Features />
-      <HowItWorks />
-      <CTA />
-      <Footer />
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-primary-soft/40 via-background to-background text-foreground">
+      {/* Decorative soft blobs */}
+      <div className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/20 blur-3xl" />
+      <div className="pointer-events-none absolute top-40 -right-32 h-96 w-96 rounded-full bg-accent/30 blur-3xl" />
+      <div className="pointer-events-none absolute top-[110vh] left-1/3 h-80 w-80 rounded-full bg-primary-soft/60 blur-3xl" />
+      <div className="relative">
+        <Header />
+        <Hero />
+        <Features />
+        <HowItWorks />
+        <CTA />
+        <Footer />
+      </div>
     </div>
   );
 }
 
 function Header() {
   return (
-    <header className="sticky top-0 z-30 border-b border-border/60 bg-background/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 border-b border-border/40 bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-8 md:px-12 lg:px-20">
         <Link to="/" className="flex items-center gap-2">
           <Logo />
@@ -83,7 +89,7 @@ function Hero() {
           <Sparkles className="h-3.5 w-3.5" />
           Asisten AI keuangan personal
         </div>
-        <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
+        <h1 className="font-display text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
           Atur uangmu, <span className="text-primary">tenangkan</span> pikiranmu.
         </h1>
         <p className="max-w-lg text-lg leading-relaxed text-muted-foreground">
@@ -278,7 +284,7 @@ function Features() {
     <section id="fitur" className="border-t border-border/60 bg-secondary/30">
       <div className="mx-auto max-w-7xl px-8 py-24 md:px-12 lg:px-20">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-4xl font-semibold tracking-tight md:text-5xl">
+          <h2 className="font-display text-4xl font-semibold tracking-tight md:text-5xl">
             Semua yang kamu butuh.
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
@@ -306,30 +312,80 @@ function Features() {
 
 function HowItWorks() {
   const steps = [
-    { n: "01", title: "Daftar", desc: "Email & password. Selesai." },
-    { n: "02", title: "Catat", desc: "Pemasukan & pengeluaran." },
-    { n: "03", title: "Pantau", desc: "Grafik + saran AI." },
+    {
+      n: "01",
+      title: "Daftar",
+      desc: "Buat akun dengan email & password. Tanpa kartu kredit.",
+      icon: Sparkles,
+    },
+    {
+      n: "02",
+      title: "Catat",
+      desc: "Tambah pemasukan & pengeluaran lewat antarmuka yang ringan.",
+      icon: Wallet,
+    },
+    {
+      n: "03",
+      title: "Pantau",
+      desc: "Lihat grafik dan minta saran dari asisten AI Monetra.",
+      icon: Bot,
+    },
   ];
   return (
-    <section id="cara-kerja" className="mx-auto max-w-7xl px-8 py-24 md:px-12 lg:px-20">
-      <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-4xl font-semibold tracking-tight md:text-5xl">
-          Tiga langkah. Itu saja.
-        </h2>
-      </div>
-      <div className="mt-16 grid gap-6 md:grid-cols-3">
-        {steps.map((s) => (
-          <div
-            key={s.n}
-            className="group relative rounded-3xl border border-border bg-card p-8 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5"
-          >
-            <div className="text-5xl font-semibold text-primary/30 transition-colors group-hover:text-primary/60">
-              {s.n}
-            </div>
-            <h3 className="mt-4 text-xl font-semibold tracking-tight">{s.title}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{s.desc}</p>
+    <section id="cara-kerja" className="relative">
+      <div className="mx-auto grid max-w-7xl gap-16 px-8 py-24 md:grid-cols-2 md:items-start md:gap-20 md:px-12 md:py-32 lg:px-20">
+        {/* Left — sticky heading */}
+        <div className="md:sticky md:top-28">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1 text-xs font-medium text-primary backdrop-blur">
+            <Sparkles className="h-3.5 w-3.5" />
+            Cara Kerja
           </div>
-        ))}
+          <h2 className="font-display mt-5 text-4xl font-semibold leading-[1.05] tracking-tight md:text-5xl">
+            Tiga langkah. <br />
+            <span className="text-primary">Itu saja.</span>
+          </h2>
+          <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
+            Mulai mengatur keuanganmu dalam hitungan menit — tidak perlu spreadsheet
+            atau pengetahuan finansial.
+          </p>
+          <Link
+            to="/auth"
+            search={{ mode: "signup" }}
+            className="group mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90"
+          >
+            Coba sekarang
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </div>
+
+        {/* Right — vertical timeline */}
+        <ol className="relative space-y-6 md:space-y-8">
+          <div
+            aria-hidden
+            className="absolute left-7 top-6 bottom-6 w-px bg-gradient-to-b from-primary/40 via-primary/20 to-transparent"
+          />
+          {steps.map((s) => (
+            <li
+              key={s.n}
+              className="group relative flex gap-5 rounded-3xl border border-border bg-card/80 p-6 backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5"
+            >
+              <div className="relative z-10 grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-lg shadow-primary/25 transition-transform group-hover:scale-105">
+                <s.icon className="h-6 w-6" />
+              </div>
+              <div className="flex-1 pt-1">
+                <div className="flex items-center gap-2 text-xs font-medium text-primary/70">
+                  <span>Langkah {s.n}</span>
+                </div>
+                <h3 className="font-display mt-1 text-xl font-semibold tracking-tight">
+                  {s.title}
+                </h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                  {s.desc}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
@@ -339,7 +395,7 @@ function CTA() {
   return (
     <section className="px-8 pb-24 md:px-12 lg:px-20">
       <div className="mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-primary via-primary to-accent p-12 text-center text-primary-foreground shadow-2xl shadow-primary/30 md:p-20">
-        <h2 className="mx-auto max-w-2xl text-4xl font-semibold tracking-tight md:text-5xl">
+        <h2 className="font-display mx-auto max-w-2xl text-4xl font-semibold tracking-tight md:text-5xl">
           Mulai hari ini. Gratis.
         </h2>
         <p className="mx-auto mt-4 max-w-md text-primary-foreground/80">
