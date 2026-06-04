@@ -89,7 +89,7 @@ function Hero() {
           <Sparkles className="h-3.5 w-3.5" />
           Asisten AI keuangan personal
         </div>
-        <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
+        <h1 className="font-display text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
           Atur uangmu, <span className="text-primary">tenangkan</span> pikiranmu.
         </h1>
         <p className="max-w-lg text-lg leading-relaxed text-muted-foreground">
@@ -284,7 +284,7 @@ function Features() {
     <section id="fitur" className="border-t border-border/60 bg-secondary/30">
       <div className="mx-auto max-w-7xl px-8 py-24 md:px-12 lg:px-20">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-4xl font-semibold tracking-tight md:text-5xl">
+          <h2 className="font-display text-4xl font-semibold tracking-tight md:text-5xl">
             Semua yang kamu butuh.
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
@@ -395,7 +395,7 @@ function CTA() {
   return (
     <section className="px-8 pb-24 md:px-12 lg:px-20">
       <div className="mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-primary via-primary to-accent p-12 text-center text-primary-foreground shadow-2xl shadow-primary/30 md:p-20">
-        <h2 className="mx-auto max-w-2xl text-4xl font-semibold tracking-tight md:text-5xl">
+        <h2 className="font-display mx-auto max-w-2xl text-4xl font-semibold tracking-tight md:text-5xl">
           Mulai hari ini. Gratis.
         </h2>
         <p className="mx-auto mt-4 max-w-md text-primary-foreground/80">
