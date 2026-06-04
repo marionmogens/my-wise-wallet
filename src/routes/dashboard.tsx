@@ -1018,3 +1018,225 @@ function ChatInline() {
     </div>
   );
 }
+
+function GoalsView() {
+  const fetchGoals = useServerFn(getGoals);
+  const add = useServerFn(addGoal);
+  const contribute = useServerFn(contributeGoal);
+  const del = useServerFn(deleteGoal);
+
+  const goalsQ = useQuery({ queryKey: ["goals"], queryFn: () => fetchGoals() });
+  const qc = useQueryClient();
+  const invalidate = () => qc.invalidateQueries({ queryKey: ["goals"] });
+
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [target, setTarget] = useState("");
+  const [color, setColor] = useState("#6366f1");
+  const [targetDate, setTargetDate] = useState("");
+  const [err, setErr] = useState("");
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setErr("");
+    try {
+      await add({
+        data: {
+          name,
+          targetAmount: Number(target),
+          color,
+          targetDate: targetDate || null,
+        },
+      });
+      setName("");
+      setTarget("");
+      setTargetDate("");
+      setOpen(false);
+      invalidate();
+    } catch (e: any) {
+      setErr(e?.message || "Gagal");
+    }
+  }
+
+  const goals = goalsQ.data?.goals || [];
+
+  return (
+    <>
+      <div className="mb-6 flex items-end justify-between flex-wrap gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">Target Tabungan</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Tetapkan target dan pantau progres tabunganmu.
+          </p>
+        </div>
+        <button
+          onClick={() => setOpen(true)}
+          className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary/90"
+        >
+          <Plus className="h-4 w-4" /> Target baru
+        </button>
+      </div>
+
+      {goalsQ.isLoading && <p className="text-sm text-muted-foreground">Memuat…</p>}
+
+      {!goalsQ.isLoading && goals.length === 0 && (
+        <div className="rounded-3xl border border-dashed border-border bg-card p-10 text-center">
+          <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-primary-soft text-primary">
+            <PiggyBank className="h-6 w-6" />
+          </div>
+          <h3 className="mt-3 text-base font-semibold">Belum ada target</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Mulai dengan target pertamamu — misalnya "Dana darurat" atau "Liburan Bali".
+          </p>
+          <button
+            onClick={() => setOpen(true)}
+            className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          >
+            <Plus className="h-4 w-4" /> Buat target
+          </button>
+        </div>
+      )}
+
+      <div className="grid gap-4 md:grid-cols-2">
+        {goals.map((g) => {
+          const pct = Math.min(100, (g.savedAmount / g.targetAmount) * 100);
+          const done = g.savedAmount >= g.targetAmount;
+          return (
+            <div key={g.id} className="rounded-3xl border border-border bg-card p-5">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div
+                    className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl"
+                    style={{ background: g.color + "22", color: g.color }}
+                  >
+                    <Target className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold">{g.name}</p>
+                    {g.targetDate && (
+                      <p className="text-xs text-muted-foreground">
+                        Target: {new Date(g.targetDate).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <button
+                  onClick={async () => {
+                    if (!confirm("Hapus target ini?")) return;
+                    await del({ data: { id: g.id } });
+                    invalidate();
+                  }}
+                  className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-destructive"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
+
+              <div className="mt-4">
+                <div className="flex items-baseline justify-between">
+                  <p className="text-xl font-semibold tracking-tight">{rupiah(g.savedAmount)}</p>
+                  <p className="text-xs text-muted-foreground">dari {rupiah(g.targetAmount)}</p>
+                </div>
+                <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
+                  <div
+                    className="h-full rounded-full transition-all duration-700"
+                    style={{ width: `${pct}%`, background: g.color }}
+                  />
+                </div>
+                <p className={`mt-1.5 text-xs font-medium ${done ? "text-success" : "text-muted-foreground"}`}>
+                  {done ? "🎉 Target tercapai!" : `${pct.toFixed(0)}% tercapai`}
+                </p>
+              </div>
+
+              <ContributeForm
+                onAdd={async (amt) => {
+                  await contribute({ data: { id: g.id, amount: amt } });
+                  invalidate();
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      {open && (
+        <Modal title="Target baru" onClose={() => setOpen(false)}>
+          <form onSubmit={submit} className="space-y-3">
+            <input
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Nama target (mis. Liburan Bali)"
+              className={inputCls}
+            />
+            <input
+              required
+              type="number"
+              min="1"
+              value={target}
+              onChange={(e) => setTarget(e.target.value)}
+              placeholder="Jumlah target (Rp)"
+              className={inputCls}
+            />
+            <div className="flex gap-2">
+              <input
+                type="date"
+                value={targetDate}
+                onChange={(e) => setTargetDate(e.target.value)}
+                className={inputCls + " flex-1"}
+              />
+              <input
+                type="color"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+                className="h-10 w-12 rounded-xl border border-input"
+              />
+            </div>
+            {err && <p className="text-sm text-destructive">{err}</p>}
+            <button
+              type="submit"
+              className="w-full rounded-xl bg-primary py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+            >
+              Simpan target
+            </button>
+          </form>
+        </Modal>
+      )}
+    </>
+  );
+}
+
+function ContributeForm({ onAdd }: { onAdd: (amount: number) => Promise<void> }) {
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    const n = Number(amount);
+    if (!n) return;
+    setLoading(true);
+    try {
+      await onAdd(n);
+      setAmount("");
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+    <form onSubmit={submit} className="mt-4 flex gap-2">
+      <input
+        type="number"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        placeholder="Tambah / kurangi (Rp)"
+        className={inputCls + " flex-1"}
+      />
+      <button
+        disabled={loading || !amount}
+        className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+      >
+        <Plus className="h-4 w-4" />
+      </button>
+    </form>
+  );
+}
+
