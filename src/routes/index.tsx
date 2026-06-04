@@ -272,7 +272,7 @@ function HowItWorks() {
     { n: "03", title: "Pantau & dapatkan saran", desc: "Lihat grafik dan tanya AI untuk insight finansial." },
   ];
   return (
-    <section id="cara-kerja" className="mx-auto max-w-7xl px-6 py-20">
+    <section id="cara-kerja" className="mx-auto max-w-7xl px-8 py-20 md:px-12 lg:px-20">
       <div className="grid gap-12 md:grid-cols-2 md:items-start">
         <div>
           <p className="text-sm font-medium text-primary">Cara kerja</p>
