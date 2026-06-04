@@ -241,15 +241,8 @@ function HeroMock() {
                     </div>
                     <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-muted">
                       <div
-                        key={`cat-${barIdx}-${i}`}
-                        className="h-full rounded-full origin-left"
-                        style={{
-                          width: `${c.pct}%`,
-                          backgroundColor: c.color,
-                          animation: `grow-bar 0.8s cubic-bezier(0.22, 1, 0.36, 1) both`,
-                          animationDelay: `${i * 100}ms`,
-                          transform: "scaleX(0)",
-                        }}
+                        className="h-full rounded-full transition-all duration-700 ease-out"
+                        style={{ width: `${c.pct}%`, backgroundColor: c.color }}
                       />
                     </div>
                   </div>
