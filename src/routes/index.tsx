@@ -265,38 +265,37 @@ function HeroMock() {
 
 
 const features = [
-  { icon: Wallet, title: "Dompet harian", desc: "Tetapkan batas pengeluaran per hari dan lihat sisa real-time." },
-  { icon: PieChart, title: "Grafik visual", desc: "Pahami arus kas lewat chart kategori dan tren bulanan." },
-  { icon: Target, title: "Kategori fleksibel", desc: "Buat kategori sendiri dengan warna khas untuk setiap budget." },
-  { icon: Bot, title: "Asisten AI", desc: "Tanya apa saja soal keuangan, dapatkan saran personal." },
-  { icon: Download, title: "Ekspor CSV", desc: "Unduh laporan bulanan untuk dianalisis di Excel atau alat lain." },
-  { icon: Sparkles, title: "Desain bersih", desc: "Antarmuka ringan terinspirasi iOS, nyaman dipakai harian." },
+  { icon: Wallet, title: "Dompet harian", desc: "Batas pengeluaran per hari." },
+  { icon: PieChart, title: "Grafik visual", desc: "Lihat ke mana uangmu pergi." },
+  { icon: Target, title: "Kategori custom", desc: "Budget sesuai gaya hidupmu." },
+  { icon: Bot, title: "Asisten AI", desc: "Saran finansial personal." },
+  { icon: Download, title: "Ekspor CSV", desc: "Unduh laporan kapan saja." },
+  { icon: Sparkles, title: "Antarmuka bersih", desc: "Nyaman dipakai harian." },
 ];
 
 function Features() {
   return (
     <section id="fitur" className="border-t border-border/60 bg-secondary/30">
-      <div className="mx-auto max-w-7xl px-8 py-20 md:px-12 lg:px-20">
-        <div className="max-w-2xl">
-          <p className="text-sm font-medium text-primary">Fitur</p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
-            Semua yang kamu butuh untuk kendali keuangan.
+      <div className="mx-auto max-w-7xl px-8 py-24 md:px-12 lg:px-20">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-4xl font-semibold tracking-tight md:text-5xl">
+            Semua yang kamu butuh.
           </h2>
-          <p className="mt-4 text-muted-foreground">
-            Dari pencatatan harian hingga insight AI — semua dalam satu dashboard yang rapi.
+          <p className="mt-4 text-lg text-muted-foreground">
+            Satu app. Kendali penuh.
           </p>
         </div>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f) => (
             <div
               key={f.title}
-              className="group rounded-3xl border border-border bg-card p-6 transition-all hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
+              className="group rounded-3xl border border-border bg-card p-8 transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5"
             >
-              <div className="grid h-11 w-11 place-items-center rounded-2xl bg-primary-soft text-primary">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary-soft text-primary transition-transform group-hover:scale-110">
                 <f.icon className="h-5 w-5" />
               </div>
-              <h3 className="mt-5 text-lg font-semibold tracking-tight">{f.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
+              <h3 className="mt-6 text-lg font-semibold tracking-tight">{f.title}</h3>
+              <p className="mt-1.5 text-sm text-muted-foreground">{f.desc}</p>
             </div>
           ))}
         </div>
@@ -307,33 +306,30 @@ function Features() {
 
 function HowItWorks() {
   const steps = [
-    { n: "01", title: "Buat akun", desc: "Daftar dalam 30 detik dengan email & password." },
-    { n: "02", title: "Catat transaksi", desc: "Tambahkan pemasukan / pengeluaran dengan kategori." },
-    { n: "03", title: "Pantau & dapatkan saran", desc: "Lihat grafik dan tanya AI untuk insight finansial." },
+    { n: "01", title: "Daftar", desc: "Email & password. Selesai." },
+    { n: "02", title: "Catat", desc: "Pemasukan & pengeluaran." },
+    { n: "03", title: "Pantau", desc: "Grafik + saran AI." },
   ];
   return (
-    <section id="cara-kerja" className="mx-auto max-w-7xl px-8 py-20 md:px-12 lg:px-20">
-      <div className="grid gap-12 md:grid-cols-2 md:items-start">
-        <div>
-          <p className="text-sm font-medium text-primary">Cara kerja</p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
-            Mulai dalam tiga langkah sederhana.
-          </h2>
-          <p className="mt-4 max-w-md text-muted-foreground">
-            Tidak perlu spreadsheet rumit. Monetra dibuat agar mencatat keuangan terasa ringan.
-          </p>
-        </div>
-        <div className="space-y-3">
-          {steps.map((s) => (
-            <div key={s.n} className="flex gap-4 rounded-3xl border border-border bg-card p-5">
-              <div className="text-2xl font-semibold text-primary/70">{s.n}</div>
-              <div>
-                <h3 className="font-semibold tracking-tight">{s.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{s.desc}</p>
-              </div>
+    <section id="cara-kerja" className="mx-auto max-w-7xl px-8 py-24 md:px-12 lg:px-20">
+      <div className="mx-auto max-w-2xl text-center">
+        <h2 className="text-4xl font-semibold tracking-tight md:text-5xl">
+          Tiga langkah. Itu saja.
+        </h2>
+      </div>
+      <div className="mt-16 grid gap-6 md:grid-cols-3">
+        {steps.map((s) => (
+          <div
+            key={s.n}
+            className="group relative rounded-3xl border border-border bg-card p-8 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5"
+          >
+            <div className="text-5xl font-semibold text-primary/30 transition-colors group-hover:text-primary/60">
+              {s.n}
             </div>
-          ))}
-        </div>
+            <h3 className="mt-4 text-xl font-semibold tracking-tight">{s.title}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{s.desc}</p>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -341,26 +337,22 @@ function HowItWorks() {
 
 function CTA() {
   return (
-    <section className="px-8 pb-20 md:px-12 lg:px-20">
-      <div className="mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] border border-border bg-gradient-to-br from-primary via-primary to-accent p-10 text-primary-foreground shadow-2xl shadow-primary/30 md:p-16">
-        <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 className="max-w-xl text-3xl font-semibold tracking-tight md:text-4xl">
-              Siap punya kontrol penuh atas keuanganmu?
-            </h2>
-            <p className="mt-3 max-w-lg text-primary-foreground/80">
-              Gratis, mudah, dan dirancang untuk kebiasaan harian.
-            </p>
-          </div>
-          <Link
-            to="/auth"
-            search={{ mode: "signup" }}
-            className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3 text-sm font-medium text-foreground shadow-lg hover:bg-background/90 transition-all"
-          >
-            Mulai sekarang
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
+    <section className="px-8 pb-24 md:px-12 lg:px-20">
+      <div className="mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-primary via-primary to-accent p-12 text-center text-primary-foreground shadow-2xl shadow-primary/30 md:p-20">
+        <h2 className="mx-auto max-w-2xl text-4xl font-semibold tracking-tight md:text-5xl">
+          Mulai hari ini. Gratis.
+        </h2>
+        <p className="mx-auto mt-4 max-w-md text-primary-foreground/80">
+          Tanpa kartu kredit. Tanpa komitmen.
+        </p>
+        <Link
+          to="/auth"
+          search={{ mode: "signup" }}
+          className="group mt-8 inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-semibold text-foreground shadow-lg transition-all hover:scale-105 hover:bg-background/95"
+        >
+          Buat akun gratis
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+        </Link>
       </div>
     </section>
   );
@@ -372,10 +364,11 @@ function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-8 py-8 text-xs text-muted-foreground md:flex-row md:px-12 lg:px-20">
         <div className="flex items-center gap-2">
           <Logo />
-          <span>© {new Date().getFullYear()} Monetra. Semua hak dilindungi.</span>
+          <span>© {new Date().getFullYear()} Monetra</span>
         </div>
-        <p>Dibuat dengan ❤ untuk pengaturan keuangan yang lebih baik.</p>
+        <p>Atur uangmu lebih cerdas.</p>
       </div>
     </footer>
   );
 }
+
