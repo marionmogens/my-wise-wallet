@@ -193,9 +193,12 @@ function Dashboard() {
           })}
         </nav>
         <div className="mt-auto space-y-3 border-t border-border pt-4">
-          <div className="px-2">
-            <p className="truncate text-sm font-medium">{user.name}</p>
-            <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+          <div className="flex items-center justify-between gap-2 px-2">
+            <div className="min-w-0">
+              <p className="truncate text-sm font-medium">{user.name}</p>
+              <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+            </div>
+            <ThemeToggle />
           </div>
           <button
             onClick={handleLogout}
