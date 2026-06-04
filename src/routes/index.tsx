@@ -329,7 +329,7 @@ function CTA() {
 function Footer() {
   return (
     <footer className="border-t border-border/60">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-8 text-xs text-muted-foreground md:flex-row">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-8 py-8 text-xs text-muted-foreground md:flex-row md:px-12 lg:px-20">
         <div className="flex items-center gap-2">
           <Logo />
           <span>© {new Date().getFullYear()} Monetra. Semua hak dilindungi.</span>
