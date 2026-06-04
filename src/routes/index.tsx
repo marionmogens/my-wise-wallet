@@ -301,7 +301,7 @@ function HowItWorks() {
 
 function CTA() {
   return (
-    <section className="px-6 pb-20">
+    <section className="px-8 pb-20 md:px-12 lg:px-20">
       <div className="mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] border border-border bg-gradient-to-br from-primary via-primary to-accent p-10 text-primary-foreground shadow-2xl shadow-primary/30 md:p-16">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
           <div>
