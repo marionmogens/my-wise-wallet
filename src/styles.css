@@ -157,3 +157,5 @@
 .animate-count-up { animation: count-up 0.8s ease-out both; }
 .animate-typing-dot { animation: typing-dot 1.2s ease-in-out infinite; }
 
+.font-quote { font-family: var(--font-quote); font-optical-sizing: auto; font-variation-settings: "SOFT" 50, "WONK" 0; }
+
