@@ -393,23 +393,223 @@ function HowItWorks() {
 }
 
 function CTA() {
+  const stats = [
+    { v: "100%", l: "Gratis" },
+    { v: "<2 mnt", l: "Setup" },
+    { v: "256-bit", l: "Enkripsi" },
+  ];
   return (
     <section className="px-8 pb-24 md:px-12 lg:px-20">
-      <div className="mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-primary via-primary to-accent p-12 text-center text-primary-foreground shadow-2xl shadow-primary/30 md:p-20">
-        <h2 className="font-display mx-auto max-w-2xl text-4xl font-semibold tracking-tight md:text-5xl">
-          Mulai hari ini. Gratis.
-        </h2>
-        <p className="mx-auto mt-4 max-w-md text-primary-foreground/80">
-          Tanpa kartu kredit. Tanpa komitmen.
-        </p>
-        <Link
-          to="/auth"
-          search={{ mode: "signup" }}
-          className="group mt-8 inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-semibold text-foreground shadow-lg transition-all hover:scale-105 hover:bg-background/95"
-        >
-          Buat akun gratis
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-        </Link>
+      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-primary via-primary to-accent p-10 text-primary-foreground shadow-2xl shadow-primary/30 md:p-16">
+        {/* Decorative grid + blobs */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.12]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+        <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/20 blur-3xl" />
+        <div aria-hidden className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-accent/40 blur-3xl" />
+
+        <div className="relative grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-center">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-medium backdrop-blur">
+              <Sparkles className="h-3.5 w-3.5" />
+              Mulai perjalanan finansialmu
+            </span>
+            <h2 className="font-display mt-5 text-4xl font-semibold leading-[1.05] tracking-tight md:text-5xl">
+              Mulai hari ini. <br />
+              <span className="text-primary-foreground/80">Gratis selamanya.</span>
+            </h2>
+            <p className="mt-5 max-w-md text-base text-primary-foreground/80">
+              Bergabung dengan ribuan orang yang sudah lebih tenang soal uang.
+              Tanpa kartu kredit, tanpa komitmen.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link
+                to="/auth"
+                search={{ mode: "signup" }}
+                className="group inline-flex items-center gap-2 rounded-full bg-background px-7 py-3.5 text-sm font-semibold text-foreground shadow-lg transition-all hover:scale-[1.02] hover:bg-background/95"
+              >
+                Buat akun gratis
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+              <Link
+                to="/auth"
+                search={{ mode: "signin" }}
+                className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-7 py-3.5 text-sm font-medium backdrop-blur transition-all hover:bg-white/20"
+              >
+                Sudah punya akun
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-3 md:gap-4">
+            {stats.map((s) => (
+              <div
+                key={s.l}
+                className="rounded-2xl border border-white/20 bg-white/10 p-4 text-center backdrop-blur"
+              >
+                <p className="font-display text-xl font-semibold tracking-tight md:text-2xl">{s.v}</p>
+                <p className="mt-1 text-[11px] uppercase tracking-wide text-primary-foreground/70">
+                  {s.l}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// TODO: Ganti gambar di array `quotes` dengan gambar punyamu sendiri.
+// Letakkan file di /public/quotes/ (mis. q1.jpg) lalu set `image: "/quotes/q1.jpg"`.
+const quotes = [
+  {
+    text: "Do not save what is left after spending; spend what is left after saving.",
+    author: "Warren Buffett",
+    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&q=80",
+  },
+  {
+    text: "A budget is telling your money where to go instead of wondering where it went.",
+    author: "Dave Ramsey",
+    image: "https://images.unsplash.com/photo-1579621970795-87facc2f976d?w=1200&q=80",
+  },
+  {
+    text: "Beware of little expenses; a small leak will sink a great ship.",
+    author: "Benjamin Franklin",
+    image: "https://images.unsplash.com/photo-1565514020179-026b92b84bb6?w=1200&q=80",
+  },
+  {
+    text: "Wealth consists not in having great possessions, but in having few wants.",
+    author: "Epictetus",
+    image: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1200&q=80",
+  },
+];
+
+function Quotes() {
+  const [i, setI] = useState(0);
+  const total = quotes.length;
+  const go = (delta: number) => setI((p) => (p + delta + total) % total);
+
+  // Auto-advance
+  useEffect(() => {
+    const t = setInterval(() => setI((p) => (p + 1) % total), 6000);
+    return () => clearInterval(t);
+  }, [total]);
+
+  return (
+    <section className="border-t border-border/60 bg-gradient-to-b from-secondary/30 to-background">
+      <div className="mx-auto max-w-6xl px-8 py-24 md:px-12 md:py-28 lg:px-20">
+        <div className="mb-10 flex items-end justify-between gap-4">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1 text-xs font-medium text-primary backdrop-blur">
+              <Quote className="h-3.5 w-3.5" />
+              Words on Money
+            </span>
+            <h2 className="font-quote mt-4 text-3xl italic tracking-tight md:text-4xl">
+              Inspirasi finansial sepanjang masa
+            </h2>
+          </div>
+          <div className="hidden gap-2 md:flex">
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              aria-label="Sebelumnya"
+              className="grid h-11 w-11 place-items-center rounded-full border border-border bg-card transition-colors hover:bg-muted"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              aria-label="Berikutnya"
+              className="grid h-11 w-11 place-items-center rounded-full border border-border bg-card transition-colors hover:bg-muted"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Slider */}
+        <div className="relative overflow-hidden rounded-[2rem] border border-border bg-card shadow-xl shadow-primary/5">
+          <div
+            className="flex transition-transform duration-700 ease-out"
+            style={{ transform: `translateX(-${i * 100}%)` }}
+          >
+            {quotes.map((q, idx) => (
+              <article
+                key={idx}
+                className="grid w-full shrink-0 md:grid-cols-2"
+                aria-hidden={idx !== i}
+              >
+                {/* Image */}
+                <div className="relative h-64 overflow-hidden md:h-[420px]">
+                  <img
+                    src={q.image}
+                    alt=""
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-[6s] ease-out"
+                    style={{ transform: idx === i ? "scale(1.06)" : "scale(1)" }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent md:bg-gradient-to-r" />
+                </div>
+                {/* Quote */}
+                <div className="flex flex-col justify-center gap-6 p-8 md:p-12">
+                  <Quote className="h-10 w-10 text-primary/40" />
+                  <p className="font-quote text-2xl italic leading-[1.35] tracking-tight text-foreground md:text-[2rem]">
+                    “{q.text}”
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <span className="h-px w-10 bg-primary/40" />
+                    <p className="text-sm font-medium tracking-wide text-muted-foreground">
+                      {q.author}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        {/* Dots + mobile arrows */}
+        <div className="mt-6 flex items-center justify-between">
+          <div className="flex gap-2 md:hidden">
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              aria-label="Sebelumnya"
+              className="grid h-10 w-10 place-items-center rounded-full border border-border bg-card"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              aria-label="Berikutnya"
+              className="grid h-10 w-10 place-items-center rounded-full border border-border bg-card"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+          <div className="ml-auto flex items-center gap-2">
+            {quotes.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                aria-label={`Slide ${idx + 1}`}
+                onClick={() => setI(idx)}
+                className={`h-1.5 rounded-full transition-all ${
+                  idx === i ? "w-8 bg-primary" : "w-2 bg-border hover:bg-muted-foreground/40"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
