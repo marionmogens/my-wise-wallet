@@ -33,6 +33,7 @@ function Landing() {
         <Hero />
         <Features />
         <HowItWorks />
+        <Quotes />
         <CTA />
         <Footer />
       </div>
