@@ -17,30 +17,23 @@ export const signupUser = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const bcrypt = (await import("bcryptjs")).default;
     const { getMonetraSession } = await import("./session.server");
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { query } = await import("./db.server");
 
     const email = data.email.toLowerCase();
-    const { data: existingUser, error: existsError } = await supabaseAdmin
-      .from("monetra_users")
-      .select("id")
-      .eq("email", email)
-      .maybeSingle();
-
-    if (existsError) throw new Error(existsError.message);
-    if (existingUser) {
-      throw new Error("Email sudah terdaftar");
-    }
+    const exists = await query<{ id: string }>(
+      "SELECT id FROM monetra_users WHERE email = $1 LIMIT 1",
+      [email]
+    );
+    if (exists.rows[0]) throw new Error("Email sudah terdaftar");
 
     const hash = await bcrypt.hash(data.password, 10);
-    const { data: user, error: insertError } = await supabaseAdmin
-      .from("monetra_users")
-      .insert({ email, name: data.name, password_hash: hash })
-      .select("id, email, name, daily_limit")
-      .single();
+    const inserted = await query<{ id: string; email: string; name: string }>(
+      "INSERT INTO monetra_users (email, name, password_hash) VALUES ($1, $2, $3) RETURNING id, email, name",
+      [email, data.name, hash]
+    );
+    const user = inserted.rows[0];
+    if (!user) throw new Error("Gagal membuat akun");
 
-    if (insertError || !user) throw new Error(insertError?.message || "Gagal membuat akun");
-
-    // seed default categories
     const defaults: Array<[string, "income" | "expense", string]> = [
       ["Gaji", "income", "#22c55e"],
       ["Bonus", "income", "#10b981"],
@@ -50,16 +43,12 @@ export const signupUser = createServerFn({ method: "POST" })
       ["Hiburan", "expense", "#ec4899"],
       ["Tagihan", "expense", "#0ea5e9"],
     ];
-    const { error: categoryError } = await supabaseAdmin.from("monetra_categories").insert(
-      defaults.map(([name, type, color]) => ({
-        user_id: user.id,
-        name,
-        type,
-        color,
-      }))
-    );
-
-    if (categoryError) throw new Error(categoryError.message);
+    for (const [name, type, color] of defaults) {
+      await query(
+        "INSERT INTO monetra_categories (user_id, name, type, color) VALUES ($1, $2, $3, $4)",
+        [user.id, name, type, color]
+      );
+    }
 
     const session = await getMonetraSession();
     await session.update({ userId: user.id });
@@ -71,15 +60,18 @@ export const loginUser = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const bcrypt = (await import("bcryptjs")).default;
     const { getMonetraSession } = await import("./session.server");
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { query } = await import("./db.server");
 
-    const { data: u, error } = await supabaseAdmin
-      .from("monetra_users")
-      .select("id, email, name, password_hash")
-      .eq("email", data.email.toLowerCase())
-      .maybeSingle();
-
-    if (error) throw new Error(error.message);
+    const res = await query<{
+      id: string;
+      email: string;
+      name: string;
+      password_hash: string;
+    }>(
+      "SELECT id, email, name, password_hash FROM monetra_users WHERE email = $1 LIMIT 1",
+      [data.email.toLowerCase()]
+    );
+    const u = res.rows[0];
     if (!u) throw new Error("Email atau password salah");
 
     const ok = await bcrypt.compare(data.password, u.password_hash);
@@ -98,22 +90,24 @@ export const logoutUser = createServerFn({ method: "POST" }).handler(async () =>
 
 export const getCurrentUser = createServerFn({ method: "GET" }).handler(async () => {
   const { getMonetraSession } = await import("./session.server");
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { query } = await import("./db.server");
   const session = await getMonetraSession();
   if (!session.data.userId) return null;
-  const { data: u, error } = await supabaseAdmin
-    .from("monetra_users")
-    .select("id, email, name, daily_limit")
-    .eq("id", session.data.userId)
-    .maybeSingle();
-
-  if (error) throw new Error(error.message);
+  const res = await query<{
+    id: string;
+    email: string;
+    name: string;
+    daily_limit: string | number;
+  }>(
+    "SELECT id, email, name, daily_limit FROM monetra_users WHERE id = $1 LIMIT 1",
+    [session.data.userId]
+  );
+  const u = res.rows[0];
   if (!u) return null;
-
   return {
-    id: u.id as string,
-    email: u.email as string,
-    name: u.name as string,
+    id: u.id,
+    email: u.email,
+    name: u.name,
     dailyLimit: Number(u.daily_limit),
   };
 });
